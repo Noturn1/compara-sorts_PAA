@@ -65,7 +65,7 @@ int escreve_csv(int numero_entradas, double tempo_ms,char* arquivo_csv) {
 }
 
 
-int main(int argc, char* argv[]) {
+int main(int argc, char* argv[]) { //como usar: // ./heapsort <caminho_arquivo_teste> <arquivo_csv>
     if (argc < 3) {
         cout << "Uso: " << argv[0] << " <caminho_arquivo_teste>" << endl;
         return 1;
