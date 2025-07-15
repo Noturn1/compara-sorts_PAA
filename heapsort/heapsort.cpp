@@ -78,7 +78,7 @@ int main(int argc, char* argv[]) { //como usar: // ./heapsort <caminho_arquivo_t
         return 1;
     }
     
-    vector<int> vec;
+    vector<int> vec;    
     int valor;
     int numero_entradas = 0;
     // Lê os dados do arquivo e insere no vetor
@@ -87,14 +87,13 @@ int main(int argc, char* argv[]) { //como usar: // ./heapsort <caminho_arquivo_t
         vec.push_back(valor);
     }
     fclose(arquivo_entradas);
-
     // Ordena o vetor usando heapsort
+
     clock_t start = clock();
     heapsort(vec);
     clock_t end = clock();
     double tempo_ms = 1000.0 * double(end - start) / CLOCKS_PER_SEC;
     escreve_csv(numero_entradas, tempo_ms, arquivo_csv);
-    // Exibe o vetor ordenado
    // cout << "Lista ordenada: ";
    // for (int i = 0; i < vec.size(); i++) {
    //     cout << vec[i] << " ";
@@ -103,32 +102,3 @@ int main(int argc, char* argv[]) { //como usar: // ./heapsort <caminho_arquivo_t
     cout << "Tempo de execução: " << tempo_ms << " ms" << endl;
     return 0;
 }
-
-
-
-
-/*int main(int argc, char* argv[]) {
-    if (argc < 2) {
-        cout << "Uso: " << argv[0] << " <nome_arquivo_teste>" << endl;
-        return 1;
-    }
-    char* nome_arquivo = argv[1];
-    FILE* arquivo = fopen(nome_arquivo, "r");
-    if (!arquivo) {
-        cout << "Erro ao abrir o arquivo: " << nome_arquivo << endl;
-        return 1;
-    }
-    ;
-
-    // ajustar para entrada em linha de comando para fazer os testes
-    vector<int> vec = {9, 6, 10, 2, 7, 12, 11, 13, 12};
-    heapsort(vec);
-
-    cout << "Lista ordenada: ";
-    for (int i = 0; i < vec.size(); i++) {
-        cout << vec[i] << " ";
-    }
-    cout << endl;
-
-    return 0;
-}*/
