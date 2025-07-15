@@ -1,7 +1,18 @@
 #include <iostream>
 #include <vector>
+#include <fstream>
+#include <filesystem>
 
 using namespace std;
+
+namespace fs = filesystem;
+
+void printVector(const vector<int>& v) {
+    for (int i = 0; i < v.size(); i++) {
+        cout << v[i] << " ";
+    }
+    cout << endl;
+}
 
 void merge(vector<int>* v, int left, int right){
     // transfere os elementos entre left e right para um array auxiliar
@@ -45,19 +56,38 @@ void mergeSort(vector<int>* v, int left, int right){
 }
 
 int main(){
-    cout<< "Mergesort implementation" << endl;
-    vector<int> v = {6,4,3,1,2,5,7,8,9,10};
-    int size = v.size() - 1;
-    cout << "Unsorted array: ";
-    for (int i = 0; i <= size; i++) {
-        cout << v[i] << " ";
+
+    fs::path path = "../dados";
+    cout << "Current path: " << path << endl;
+    for (const auto& entry : fs::recursive_directory_iterator(path)) {
+        if(fs::is_directory(entry)){
+            cout << "Directory: " << entry.path() << endl;
+            for(const auto& file : fs::directory_iterator(entry.path())) {
+                if(fs::is_regular_file(file)) {
+                    cout << "File: " << file.path() << endl;
+                    ifstream inputFile(file.path());
+                    if (inputFile.is_open()) {
+                        cout << "Reading file: " << file.path() << endl;
+                        vector<int> vec;
+                        string line;
+                        while (getline(inputFile, line)) {
+                            vec.push_back(stoi(line));
+                        }
+                        inputFile.close();
+                        cout<< "Mergesort implementation" << endl;
+                        cout << "Unsorted array: ";
+                        printVector(vec);
+                        mergeSort(&vec, 0, vec.size() - 1);
+                        cout << "Sorted array: ";
+                        printVector(vec);
+                    } else {
+                        cout << "Failed to open file: " << file.path() << endl;
+                    }
+                }
+                break;
+            }
+        } 
+        break;
     }
-    cout << endl;
-    mergeSort(&v, 0, size);
-    cout << "Sorted array: ";
-    for (int i = 0; i <= size; i++) {
-        cout << v[i] << " ";
-    }
-    cout << endl; 
     return 0;
 }
