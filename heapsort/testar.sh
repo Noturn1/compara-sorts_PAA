@@ -11,13 +11,14 @@ DIRETORIOS_DADOS=(
     "$DIRETORIO_PAI_DADOS/Partially Ordered"
     "$DIRETORIO_PAI_DADOS/Random Files"
 )
-
-for DIRETORIO in "${DIRETORIOS_DADOS[@]}"; do
-    ARQUIVOS=($(ls -v "$DIRETORIO"))
-    for FILE in "${ARQUIVOS[@]}"; do
-        # basename retorna o nome do diretório sem o caminho
-        # tr -d ' ' remove espaços do nome do diretório
-        # Bash não gosta de espaços em nomes de arquivos, então é melhor removê-los
-        "$EXECUTAVEL" "$DIRETORIO/$FILE" "$DIRETORIO_CSV/$(basename "$DIRETORIO" | tr -d ' ').csv"
+for i in {1..6}; do
+    for DIRETORIO in "${DIRETORIOS_DADOS[@]}"; do
+        ARQUIVOS=($(ls -v "$DIRETORIO"))
+        for FILE in "${ARQUIVOS[@]}"; do
+            # basename retorna o nome do diretório sem o caminho
+            # tr -d ' ' remove espaços do nome do diretório
+            # Bash não gosta de espaços em nomes de arquivos, então é melhor removê-los
+            "$EXECUTAVEL" "$DIRETORIO/$FILE" "$DIRETORIO_CSV/$(basename "$DIRETORIO" | tr -d ' ').csv"
+        done
     done
 done
