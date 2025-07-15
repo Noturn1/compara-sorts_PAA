@@ -1,5 +1,6 @@
 
 #Mudar aqui os diretorios onde estão os CSV e o executável do sort
+#Assume que os arquivos CSV ja existem no diretório especificado
 DIRETORIO_PAI_DADOS="/home/rafael/Desktop/quarto_ano/PAA/compara-sorts_PAA/dados"
 DIRETORIO_CSV="/home/rafael/Desktop/quarto_ano/PAA/compara-sorts_PAA/heapsort/CSV"
 EXECUTAVEL="/home/rafael/Desktop/quarto_ano/PAA/compara-sorts_PAA/heapsort/heapsort"
