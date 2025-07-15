@@ -2,6 +2,7 @@
 #include <vector>
 #include <fstream>
 #include <filesystem>
+#include <chrono>
 
 using namespace std;
 
@@ -21,11 +22,8 @@ void merge(vector<int>* v, int left, int right){
     for(int i = 0; i<= rightHelper; i++){
         helper[i] = (*v)[left + i];
     }
-
     int middleHelper = rightHelper / 2;
-
     int i = 0, j = middleHelper + 1, k = left;
-
     while(i <= middleHelper && j <= rightHelper){
         if(helper[i] <= helper[j]){
             (*v)[k] = helper[i];
@@ -56,12 +54,18 @@ void mergeSort(vector<int>* v, int left, int right){
 }
 
 int main(){
-
     fs::path path = "../dados";
+
     cout << "Current path: " << path << endl;
     for (const auto& entry : fs::recursive_directory_iterator(path)) {
         if(fs::is_directory(entry)){
             cout << "Directory: " << entry.path() << endl;
+            ofstream outputFile(fs::current_path() /(entry.path().filename().string() + "_output.csv"));
+            if (!outputFile) {
+                cerr << "Error creating output file." << endl;
+                return 1;
+            }
+            outputFile << entry.path().filename().string() <<"\n"<<"File\tTime\n";
             for(const auto& file : fs::directory_iterator(entry.path())) {
                 if(fs::is_regular_file(file)) {
                     cout << "File: " << file.path() << endl;
@@ -74,20 +78,24 @@ int main(){
                             vec.push_back(stoi(line));
                         }
                         inputFile.close();
-                        cout<< "Mergesort implementation" << endl;
-                        cout << "Unsorted array: ";
-                        printVector(vec);
+                        auto startTime = chrono::high_resolution_clock::now();
+                        //cout << "starttime: " << startTime << endl;
                         mergeSort(&vec, 0, vec.size() - 1);
-                        cout << "Sorted array: ";
-                        printVector(vec);
+                        auto endTime = chrono::high_resolution_clock::now();
+                        //cout << "endtime: " << endTime << endl;
+                        chrono::duration<double> duration = endTime - startTime;
+                        outputFile << file.path().stem()<<"\t"<< duration.count() <<"\n";
                     } else {
                         cout << "Failed to open file: " << file.path() << endl;
                     }
                 }
-                break;
+                // Este break impede a iterações sobre os arquivos dos subdiretórios.
+                //break;
             }
-        } 
-        break;
+            outputFile.close();
+        }
+        // Este break impede a iterações sobre os subdiretórios. 
+        //break;
     }
     return 0;
 }
